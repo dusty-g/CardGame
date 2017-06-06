@@ -20,57 +20,123 @@ function Deck(){
 	}
 }
 let newDeck = new Deck()
-newDeck.shuffle()
-$(document).ready(function(){
-        var player1Score;
-        var player2Score;
-        
-        var clicked1;
 
-        var clicked2;
-        var player1Turn = true
-        var firstClick = true
-        var index = 0
-        for(var row = 1; row < 5; row++){
-            var rowDiv = $("<div></div>")
-            for(var i = 0; i < 4; i++){
-                rowDiv.append("<img id='"+index+"' src='rainbow.jpg' data-alt-src = '"+newDeck.deck[index].src+"' ></img>")
-                index++
-            }
-            $("#board").append(rowDiv)
+var player1Score = 0
+var player2Score = 0
+
+var clicked1;
+
+var clicked2;
+var player1Turn = true
+var clickCount =0
+var index = 0
+$(document).ready(function(){
+    
+    newGame()
+        // $("h1").text("Player 1's Turn")
+        // var player1Score = 0
+        // var player2Score = 0
+        
+        // var clicked1;
+
+        // var clicked2;
+        // var player1Turn = true
+        // var clickCount =0
+        // var index = 0
+        // for(var row = 1; row < 5; row++){
+        //     var rowDiv = $("<div></div>")
+        //     for(var i = 0; i < 4; i++){
+        //         rowDiv.append("<img id='"+index+"' src='rainbow.jpg' data-alt-src = '"+newDeck.deck[index].src+"' ></img>")
+        //         index++
+        //     }
+        //     $("#board").append(rowDiv)
             
+        // }
+        $("#nextPlayer").click(function(){
+            if($("#"+clicked1).attr("src") == $("#"+clicked2).attr("src")){
+                (player1Turn) ? player1Score ++ : player2Score++;
+                
+                $("#"+clicked1+","+"#"+clicked2).css("visibility", "hidden")
+
+            }else{
+                toggleCard($("#"+clicked1))
+                toggleCard($("#"+clicked2))
+                
+            }
+            player1Turn = !player1Turn
+            if (player1Turn){
+                $("h1").text("Player 1's Turn")
+            }else{
+                $("h1").text("Player 2's Turn")
+            }
+            clickCount = 0
+            console.log(player1Score, player2Score)
+            $(this).css("visibility", "hidden")
+            if(player1Score + player2Score == 8){
+                if (player1Score > player2Score){
+                    $("h1").text("Player 1 wins")
+                    
+                }
+                else if (player2Score > player1Score){
+                    $("h1").text("Player 2 wins")
+                }else{
+                    $("h1").text("Tie")
+                }
+                $("h1").append("<button id = 'newGame'>New Game</button>")
+                $("#newGame").click(function(){
+                    newGame()
+
+                })
+            }
+        })
+        
+        
+})
+
+function newGame(){
+    newDeck.shuffle()
+    $("#board").empty()
+    $("h1").text("Player 1's Turn")
+    player1Score = 0
+    player2Score = 0
+
+
+
+
+    player1Turn = true
+    clickCount =0
+    index = 0
+    for(var row = 1; row < 5; row++){
+        var rowDiv = $("<div></div>")
+        for(var i = 0; i < 4; i++){
+            rowDiv.append("<img id='"+index+"' src='rainbow.jpg' data-alt-src = '"+newDeck.deck[index].src+"' ></img>")
+            index++
         }
-        $("#nextPlayer")
-        $('img').click(function(){
-            if(player1Turn){
-                if(firstClick){
+        $("#board").append(rowDiv)
+
+    }
+    $('img').click(function(){
+
+                if(clickCount == 0){
                     toggleCard($(this))
                     clicked1 = $(this).attr("id")
-                    firstClick = false
-                }else{
+                    clickCount ++
+                }else if(clickCount==1){
                     if ($(this).attr("id") != clicked1){
                         toggleCard($(this))
-                    
                         clicked2 = $(this).attr("id")
-                        if($("#"+clicked1).attr("src") == $("#"+clicked2).attr("src")){
-                            player1Score ++
-                            $("#nextPlayer").css("visibility", "visible")
-                            $("#"+clicked1+","+"#"+clicked2).css("visibility", "hidden")
-                            
-                        }else{
-
-                        }
-                        
+                        $("#nextPlayer").css("visibility", "visible")
+                        clickCount++
                     }
                     
                     
                 }
-            }
+
+            
 
                 
         })
-        
-})
+}
 function toggleCard(el){
     let altSrc = el.data("alt-src")
     el.data("alt-src", el.attr('src'))
