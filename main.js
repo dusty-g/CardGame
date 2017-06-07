@@ -65,6 +65,7 @@ $(document).ready(function(){
                     $("h1").text("Tie")
                 }
                 $("h1").append("<button id = 'newGame'>New Game</button>")
+
                 $("#newGame").click(function(){
                     newGame()
 
