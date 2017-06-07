@@ -33,25 +33,7 @@ var index = 0
 $(document).ready(function(){
     
     newGame()
-        // $("h1").text("Player 1's Turn")
-        // var player1Score = 0
-        // var player2Score = 0
         
-        // var clicked1;
-
-        // var clicked2;
-        // var player1Turn = true
-        // var clickCount =0
-        // var index = 0
-        // for(var row = 1; row < 5; row++){
-        //     var rowDiv = $("<div></div>")
-        //     for(var i = 0; i < 4; i++){
-        //         rowDiv.append("<img id='"+index+"' src='rainbow.jpg' data-alt-src = '"+newDeck.deck[index].src+"' ></img>")
-        //         index++
-        //     }
-        //     $("#board").append(rowDiv)
-            
-        // }
         $("#nextPlayer").click(function(){
             if($("#"+clicked1).attr("src") == $("#"+clicked2).attr("src")){
                 (player1Turn) ? player1Score ++ : player2Score++;
@@ -61,9 +43,9 @@ $(document).ready(function(){
             }else{
                 toggleCard($("#"+clicked1))
                 toggleCard($("#"+clicked2))
-                
+                player1Turn = !player1Turn
             }
-            player1Turn = !player1Turn
+
             if (player1Turn){
                 $("h1").text("Player 1's Turn")
             }else{
